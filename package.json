@@ -1,0 +1,14 @@
+{
+    "name": "Aura-OS",
+    "version": "1.0",
+    "description": "A resilient, AI-driven Operating System engineered for next-generation spacecraft.",
+    "author": "Krishna Bansal",
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "dev": "vite",
+        "build": "vite build",
+        "lint": "eslint.",
+        "preview": "vite preview"
+    }
+}
