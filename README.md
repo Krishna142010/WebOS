@@ -10,9 +10,3 @@ Aura OS is a high-performance, browser-based desktop environment simulating deep
 * Deterministic Window Manager: A robust Z-index layering system featuring active focus tracking, boundary collision protection, and glassmorphic rendering.
 * Hardware-Accelerated Telemetry: Canvas-driven radar sweeps, real-time audio integration, and physics-based hyperdrive particle engines running on optimized `requestAnimationFrame` loops.
 
-## Quick Start
-1. Clone the repository and install dependencies: `npm install`
-2. Initialize the local development server: `npm run dev`
-3. The bridge interface will mount at `http://localhost:5173`
-
-*Engineering the future of autonomous spaceflight.*
