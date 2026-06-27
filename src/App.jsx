@@ -15,13 +15,11 @@ import AuraAI from "./apps/AuraAI";
 import AuraCommand from "./apps/AuraCommand";
 import AuraMusic from "./apps/AuraMusic";
 import StellarNavigation from "./apps/StellarNavigation";
-import Browser from "./apps/Browser";
 import MediaViewer from "./apps/MediaViewer";
 import { SystemContext } from "./SystemContext.jsx";
 
 const DESKTOP_APPS = [
   { id: "explorer", title: "File Explorer", icon: "📁", component: Explorer, width: 820, height: 520 },
-  { id: "browser", title: "Aura Browser", icon: "🌐", component: Browser, width: 980, height: 620 },
   { id: "notepad", title: "Notepad", icon: "📝", component: Notes, width: 740, height: 520 },
   { id: "calculator", title: "Calculator", icon: "🧮", component: Calculator, width: 420, height: 520 },
   { id: "settings", title: "Settings", icon: "⚙️", component: Settings, width: 780, height: 540 },
@@ -97,10 +95,6 @@ function App() {
     openApp(DESKTOP_APPS.find((app) => app.id === "explorer"), { openMediaViewer, showToast });
   }, [openApp, openMediaViewer, showToast]);
 
-  const openBrowser = useCallback(() => {
-    openApp(DESKTOP_APPS.find((app) => app.id === "browser"));
-  }, [openApp]);
-
   const openSettings = useCallback(() => {
     openApp(DESKTOP_APPS.find((app) => app.id === "settings"));
   }, [openApp]);
@@ -145,7 +139,6 @@ function App() {
             style={styles.desktopIcon}
             onClick={() => {
               if (app.id === "explorer") openExplorer();
-              else if (app.id === "browser") openBrowser();
               else if (app.id === "settings") openSettings();
               else openApp(app);
             }}
@@ -182,7 +175,6 @@ function App() {
       {startMenuOpen && (
         <StartMenu
           openExplorer={openExplorer}
-          openBrowser={openBrowser}
           openNotes={() => openApp(DESKTOP_APPS.find((app) => app.id === "notepad"))}
           openCalculator={() => openApp(DESKTOP_APPS.find((app) => app.id === "calculator"))}
           openSettings={openSettings}
