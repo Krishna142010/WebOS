@@ -1,8 +1,8 @@
 import { useCallback } from "react";
-import clickFile from "../assets/audio/click"; // Adjust extension if needed
+import clickFile from "../assets/audio/click.wav";
 import notificationFile from "../assets/audio/notification.mp3";
 
-export function useSystemAudion() {
+export function useSystemAudio() {
     const playSound = useCallback((type) => {
         try {
             const audio = new Audio(type === "click" ? clickFile : notificationFile);

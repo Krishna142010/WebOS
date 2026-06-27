@@ -35,7 +35,7 @@ const SECTIONS = [
   },
 ];
 
-function Settings({ wallpaper, setWallpaper, showToast}) {
+function Settings({ wallpaper = "default", setWallpaper = () => {}, showToast = () => {} }) {
   const [activeSection, setActiveSection] = useState("wallpapers");
   const [ram, setRam] = useState(42);
   const [cpu, setCpu] = useState(18);

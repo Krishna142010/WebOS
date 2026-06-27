@@ -29,10 +29,10 @@ body, html {
   width: 100vw;
   height: 100vh;
   overflow: hidden;
-  background-color: var(--bg-deep);
+  background: linear-gradient(135deg, #0f6ad8 0%, #0b1120 100%);
   color: var(--text-main);
   font-family: "Inter", -apple-system, sans-serif;
-  user-select: none; /* Prevent accidental text highlighting on the desktop */
+  user-select: none;
   -webkit-font-smoothing: antialiased;
 }
 
