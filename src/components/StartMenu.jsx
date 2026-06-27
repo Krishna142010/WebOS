@@ -1,6 +1,6 @@
-import notesIcon from "../icons/notes.svg";
-import folderIcon from "../icons/folder.svg";
-import calculatorIcon from "../icons/calculator.svg";
+import notesIcon from "../icons/Notes.svg";
+import folderIcon from "../icons/Folder.svg";
+import calculatorIcon from "../icons/Calculator.svg";
 
 function StartMenu({
   openNotes,

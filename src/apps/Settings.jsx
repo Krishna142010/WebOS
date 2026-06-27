@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
-import appearanceIcon from "../icons/appearance.svg";
+import appearanceIcon from "../icons/Appearance.svg";
 import wallpaperIcon from "../icons/wallpaper.svg";
 import systemIcon from "../icons/system.svg";
 import infoIcon from "../icons/info.svg";
-import auraLogo from "../icons/aura-logo.svg";
+import auraLogo from "../icons/Aura Logo.svg";
 const WALLPAPERS = [
   { key: "wallpaper1", label: "Wallpaper 1" },
   { key: "wallpaper2", label: "Wallpaper 2" },

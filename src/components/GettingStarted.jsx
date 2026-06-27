@@ -1,10 +1,10 @@
-import auraLogo from "../icons/aura-logo.svg";
-import calculatorIcon from "../icons/calculator.svg";
-import folderIcon from "../icons/folder.svg";
-import gameIcon from "../icons/game.svg";
-import notesIcon from "../icons/notes.svg";
-import auraAIIcon from "../icons/aura-ai.svg";
-import musicIcon from "../icons/auramusic.svg";
+import auraLogo from "../icons/Aura Logo.svg";
+import calculatorIcon from "../icons/Calculator.svg";
+import folderIcon from "../icons/Folder.svg";
+import gameIcon from "../icons/Games.svg";
+import notesIcon from "../icons/Notes.svg";
+import auraAIIcon from "../icons/Aura AI.svg";
+import musicIcon from "../icons/Aura Music.svg";
 import rocketIcon from "../icons/rocket.svg";
 import settingsIcon from "../icons/settings.svg";
 import systemIcon from "../icons/system.svg";

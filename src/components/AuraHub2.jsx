@@ -1,8 +1,7 @@
 import { useState, useMemo } from "react";
-// Ensure these paths match your actual icon assets
 import sleepIcon from "../icons/sleep.svg";
-import restartIcon from "../icons/restart.svg";
-import auraLogo from "../icons/aura-logo.svg";
+import restartIcon from "../icons/Restart.svg";
+import auraLogo from "../icons/Aura Logo.svg";
 
 function AuraHub({
   onClose,

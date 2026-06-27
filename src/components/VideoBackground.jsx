@@ -1,4 +1,4 @@
-import wallpaper from "../assests/wallpaper.mp4";
+import wallpaper from "../assets/wallpaper.mp4";
 
 import w1 from "../assets/wallpapers/w1.mp4";
 import w2 from "../assets/wallpapers/w2.mp4";

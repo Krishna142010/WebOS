@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import auraLogo from "../icons/aura-logo.svg";
+import auraLogo from "../icons/Aura Logo.svg";
 
 function Taskbar({ setHubOpen, hubOpen, openApps = [], activeAppId, onAppClick }) {
   const [time, setTime] = useState("");
