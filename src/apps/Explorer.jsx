@@ -3,12 +3,13 @@ import "./Explorer.css";
 
 // Initial fallback disk image if localStorage is completely clear
 const DEFAULT_DISK_IMAGE = {
-  "root": { id: "root", name: "Aura Drive (C:)", type: "folder", parent: null, children: ["desktop", "documents", "downloads", "projects", "images"] },
+  "root": { id: "root", name: "Aura Drive (C:)", type: "folder", parent: null, children: ["desktop", "documents", "downloads", "projects", "images", "videos"] },
   "desktop": { id: "desktop", name: "Desktop", type: "folder", parent: "root", children: ["readme.txt"] },
   "documents": { id: "documents", name: "Documents", type: "folder", parent: "root", children: [] },
   "downloads": { id: "downloads", name: "Downloads", type: "folder", parent: "root", children: [] },
   "projects": { id: "projects", name: "Projects", type: "folder", parent: "root", children: [] },
   "images": { id: "images", name: "Images", type: "folder", parent: "root", children: [] },
+  "videos": { id: "videos", name: "Media", type: "folder", parent: "root", children: [] },
   "readme.txt": { id: "readme.txt", name: "readme.txt", type: "text", parent: "desktop", content: "Welcome to Aura OS. Deep space telemetry systems operational.", size: 58, created: Date.now(), modified: Date.now() }
 };
 
@@ -18,9 +19,24 @@ const FAVORITES = [
   { id: "downloads", name: "Downloads", icon: "📥" },
   { id: "projects", name: "Projects", icon: "🛠️" },
   { id: "images", name: "Images", icon: "🖼️" },
+  { id: "videos", name: "Media", icon: "🎬" },
 ];
 
-function Explorer() {
+// Helper function to get icon for file types
+function getFileIcon(item) {
+  if (item.type === "folder") return "📁";
+  if (item.type === "text") return "📄";
+  if (item.type === "image") return "🖼️";
+  if (item.type === "video") return "🎬";
+  return "📦";
+}
+
+// Helper function to check if file type should open in Media Viewer
+function isMediaFile(item) {
+  return item.type === "image" || item.type === "video";
+}
+
+function Explorer({ openMediaViewer = () => {} }) {
   // --- File System State & Persistence ---
   const [fileSystem, setFileSystem] = useState(() => {
     const saved = localStorage.getItem("aura_vfs");
@@ -205,12 +221,27 @@ function Explorer() {
             <div 
               key={item.id}
               onClick={() => setSelectedNodeId(item.id)}
-              onDoubleClick={() => item.type === "folder" && navigateTo(item.id)}
+              onDoubleClick={() => {
+                if (item.type === "folder") {
+                  navigateTo(item.id);
+                } else if (isMediaFile(item)) {
+                  openMediaViewer(item);
+                }
+              }}
               style={itemCardStyle(selectedNodeId === item.id, viewMode)}
             >
-              <div style={{ fontSize: viewMode === "grid" ? "24px" : "16px" }}>
-                {item.type === "folder" ? "📁" : "📄"}
-              </div>
+              {/* Show thumbnail for images, otherwise show icon */}
+              {item.type === "image" && item.content ? (
+                <img 
+                  src={item.content} 
+                  alt={item.name} 
+                  style={{ width: "60px", height: "60px", objectFit: "cover", borderRadius: "4px" }}
+                />
+              ) : (
+                <div style={{ fontSize: viewMode === "grid" ? "24px" : "16px" }}>
+                  {getFileIcon(item)}
+                </div>
+              )}
               <div className="ex-truncate" style={{ fontWeight: "500" }}>{item.name}</div>
             </div>
           ))}
