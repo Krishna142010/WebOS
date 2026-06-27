@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useContext } from "react";
 
 import BootScreen from "./components/BootScreen";
 import Taskbar from "./components/Taskbar";
@@ -15,9 +15,13 @@ import AuraAI from "./apps/AuraAI";
 import AuraCommand from "./apps/AuraCommand";
 import AuraMusic from "./apps/AuraMusic";
 import StellarNavigation from "./apps/StellarNavigation";
+import Browser from "./apps/Browser";
+import MediaViewer from "./apps/MediaViewer";
+import { SystemContext } from "./SystemContext.jsx";
 
 const DESKTOP_APPS = [
   { id: "explorer", title: "File Explorer", icon: "📁", component: Explorer, width: 820, height: 520 },
+  { id: "browser", title: "Aura Browser", icon: "🌐", component: Browser, width: 980, height: 620 },
   { id: "notepad", title: "Notepad", icon: "📝", component: Notes, width: 740, height: 520 },
   { id: "calculator", title: "Calculator", icon: "🧮", component: Calculator, width: 420, height: 520 },
   { id: "settings", title: "Settings", icon: "⚙️", component: Settings, width: 780, height: 540 },
@@ -25,15 +29,16 @@ const DESKTOP_APPS = [
   { id: "aura-command", title: "Bridge Console", icon: "🛰️", component: AuraCommand, width: 980, height: 620 },
   { id: "aura-music", title: "Media Player", icon: "🎵", component: AuraMusic, width: 680, height: 520 },
   { id: "stellar-nav", title: "Stellar Navigation", icon: "🌌", component: StellarNavigation, width: 980, height: 620 },
+  { id: "media-viewer", title: "Media Viewer", icon: "🖼️", component: MediaViewer, width: 860, height: 520, hidden: true },
 ];
 
 function App() {
+  const { wallpaper, setWallpaper } = useContext(SystemContext);
   const [booting, setBooting] = useState(true);
   const [showWelcome, setShowWelcome] = useState(true);
   const [startMenuOpen, setStartMenuOpen] = useState(false);
   const [openWindows, setOpenWindows] = useState([]);
   const [activeWindowId, setActiveWindowId] = useState(null);
-  const [wallpaper, setWallpaper] = useState("default");
   const [toasts, setToasts] = useState([]);
 
   const handleBootComplete = useCallback(() => {
@@ -45,13 +50,18 @@ function App() {
     setToasts((prev) => [...prev, { id, title, message }]);
   }, []);
 
-  const openApp = useCallback((app) => {
+  const openApp = useCallback((app, extraProps = {}) => {
     if (!app) return;
 
     setOpenWindows((prev) => {
       const highestZ = prev.reduce((max, w) => Math.max(max, w.zIndex || 100), 100);
       const existing = prev.find((window) => window.id === app.id);
-      const appProps = app.id === "settings" ? { wallpaper, setWallpaper, showToast } : app.props || {};
+      const appProps = {
+        ...(app.props || {}),
+        ...extraProps,
+        ...(app.id === "settings" ? { wallpaper, setWallpaper, showToast } : {}),
+      };
+
       if (existing) {
         return prev.map((window) =>
           window.id === app.id
@@ -76,6 +86,24 @@ function App() {
     setActiveWindowId(app.id);
     setStartMenuOpen(false);
   }, [showToast, wallpaper, setWallpaper]);
+
+  const openMediaViewer = useCallback((file) => {
+    const viewerApp = DESKTOP_APPS.find((app) => app.id === "media-viewer");
+    if (!viewerApp) return;
+    openApp(viewerApp, { file });
+  }, [openApp]);
+
+  const openExplorer = useCallback(() => {
+    openApp(DESKTOP_APPS.find((app) => app.id === "explorer"), { openMediaViewer, showToast });
+  }, [openApp, openMediaViewer, showToast]);
+
+  const openBrowser = useCallback(() => {
+    openApp(DESKTOP_APPS.find((app) => app.id === "browser"));
+  }, [openApp]);
+
+  const openSettings = useCallback(() => {
+    openApp(DESKTOP_APPS.find((app) => app.id === "settings"));
+  }, [openApp]);
 
   const closeWindow = useCallback((id) => {
     setOpenWindows((prev) => prev.filter((window) => window.id !== id));
@@ -111,8 +139,17 @@ function App() {
       ))}
 
       <div style={styles.desktopIcons}>
-        {DESKTOP_APPS.map((app) => (
-          <button key={app.id} style={styles.desktopIcon} onClick={() => openApp(app)}>
+        {DESKTOP_APPS.filter((app) => !app.hidden).map((app) => (
+          <button
+            key={app.id}
+            style={styles.desktopIcon}
+            onClick={() => {
+              if (app.id === "explorer") openExplorer();
+              else if (app.id === "browser") openBrowser();
+              else if (app.id === "settings") openSettings();
+              else openApp(app);
+            }}
+          >
             <span style={styles.desktopIconGlyph}>{app.icon}</span>
             <span style={styles.desktopIconLabel}>{app.title}</span>
           </button>
@@ -144,10 +181,11 @@ function App() {
       {showWelcome && <GettingStarted onContinue={() => setShowWelcome(false)} />}
       {startMenuOpen && (
         <StartMenu
-          openExplorer={() => openApp(DESKTOP_APPS.find((app) => app.id === "explorer"))}
+          openExplorer={openExplorer}
+          openBrowser={openBrowser}
           openNotes={() => openApp(DESKTOP_APPS.find((app) => app.id === "notepad"))}
           openCalculator={() => openApp(DESKTOP_APPS.find((app) => app.id === "calculator"))}
-          openSettings={() => openApp(DESKTOP_APPS.find((app) => app.id === "settings"))}
+          openSettings={openSettings}
           openAuraAI={() => openApp(DESKTOP_APPS.find((app) => app.id === "auraai"))}
           openBridge={() => openApp(DESKTOP_APPS.find((app) => app.id === "aura-command"))}
           openMusic={() => openApp(DESKTOP_APPS.find((app) => app.id === "aura-music"))}
